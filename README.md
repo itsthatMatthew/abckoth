@@ -7,6 +7,8 @@
 
 Airsoft Briefcase King of the Hill game software implementation for an ESP32 and its surrounding pheriperials.
 
+You can read the [HU Controls manual here](docs/controls_hu.md).
+
 ## Getting involved
 
 - If you want to contribute to the project, check out our [Project Contribution Guidelines](.github/CONTRIBUTING.md)!
