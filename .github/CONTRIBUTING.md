@@ -3,7 +3,7 @@
 We welcome anyone wanting to improve our project: if you want to expand the codebase, fix some bugs, or just add new, experimental features, feel free to contribute in any way!
 
 Some useful places to get your bearings of:
-- Checking our [README](README.md) should give you a clear overview of the project.
+- Checking our [README](../README.md) should give you a clear overview of the project.
 - You can view existing [Issues](https://github.com/itsthatMatthew/abckoth/issues) or create new ones to tackle problems within the codebase.
 - You can look up the [LLVM Coding Standards](https://llvm.org/docs/CodingStandards.html) to get an idea of the code style we expect.
 - Forking and creating [pull requests](https://github.com/itsthatMatthew/abckoth/pulls) are the most immediate way you can help us.
