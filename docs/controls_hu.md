@@ -34,5 +34,5 @@ A játék bármely pillanatban az alábbi állapotok pontosan egyikét veszi fel
 ## Kiegészítő funkciók
 A játék egyszerűbb nyomonkövetésére kettő "luxusperiféria" van beépítésre szánva a táskába:
 
-- [ ] Egy 2x16 karakteres LCD kijelző, mely a mindenkori játékállapotot hivatott nyilvántartani, így a két szín pontos pontszámösszege külön-külön meg is tekinthető.
+- [X] Egy 2x16 karakteres LCD kijelző, mely a mindenkori játékállapotot hivatott nyilvántartani, így a két szín pontos pontszámösszege külön-külön meg is tekinthető.
 - [ ] Egy WiFi modul, melyre felcsatlakozva a táska állapotain túl a mikrovezérlő egyéb futás közbeni paraméterei is nyomonkövethetőek.
