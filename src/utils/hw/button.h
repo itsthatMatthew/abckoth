@@ -4,8 +4,7 @@
 #include <Arduino.h>
 #include <optional>
 
-namespace abckoth
-{
+namespace abckoth {
 
 /// @brief Utility wrapper class for initializing and reading digital pins as physical buttons
 /// @tparam DEBOUNCE_DELAY_MILLIS minimum cooldown time between new digital reads
@@ -76,8 +75,7 @@ template<
   typename CALLBACK_RETURN_TYPE = void,
   typename... CALLBACK_ARGUMENT_TYPES
 >
-class CallbackButton : public Button<DEBOUNCE_DELAY_MILLIS>
-{
+class CallbackButton : public Button<DEBOUNCE_DELAY_MILLIS> {
  public:
   using CALLBACK_TYPE = CALLBACK_RETURN_TYPE(*)(CALLBACK_ARGUMENT_TYPES...);
 
@@ -136,8 +134,7 @@ template<
   typename CALLBACK_TYPE = std::function<void(void)>,
   typename... CALLBACK_ARGUMENT_TYPES
 >
-class FunctorButton : public Button<DEBOUNCE_DELAY_MILLIS>
-{
+class FunctorButton : public Button<DEBOUNCE_DELAY_MILLIS> {
  public:
   using CALLBACK_RETURN_TYPE = typename std::invoke_result_t<CALLBACK_TYPE, CALLBACK_ARGUMENT_TYPES...>;
 
@@ -186,6 +183,60 @@ class FunctorButton : public Button<DEBOUNCE_DELAY_MILLIS>
   CALLBACK_TYPE m_on_pressed;
   CALLBACK_TYPE m_on_released;
 }; // class CapturingCallbackButton
+
+
+
+/// @brief partial template class specialization for FunctorButton that does not take any arguments
+/// @tparam DEBOUNCE_DELAY_MILLIS minimum cooldown time between new digital reads, forwarded to the Button class
+/// @tparam CALLBACK_RETURN_TYPE the return type of the functors
+template<uint32_t DEBOUNCE_DELAY_MILLIS, typename CALLBACK_RETURN_TYPE>
+class FunctorButton<DEBOUNCE_DELAY_MILLIS, std::function<CALLBACK_RETURN_TYPE(void)>> : public Button<DEBOUNCE_DELAY_MILLIS> {
+ public:
+  using CALLBACK_TYPE = typename std::function<CALLBACK_RETURN_TYPE(void)>;
+
+  /// @param pin the digital pin assigned to the button
+  /// @param on_rising functor for when the button is in a rising state
+  /// @param on_falling functor for when the button is in a falling state
+  /// @param on_pressed functor for when the button is in a pressed state
+  /// @param on_released functor for when the button is in a released state
+  /// @param init whether or not to call begin() right away
+  explicit constexpr FunctorButton(const uint8_t pin, CALLBACK_TYPE on_rising = nullptr, CALLBACK_TYPE on_falling = nullptr, CALLBACK_TYPE on_pressed = nullptr, CALLBACK_TYPE on_released = nullptr, const bool init = false) noexcept
+  : Button<>(pin, init), m_on_rising(on_rising), m_on_falling(on_falling), m_on_pressed(on_pressed), m_on_released(on_released)
+  {}
+  
+  /// @brief reads the button's state change, and calls the appropriate functor (if none is set, returns an empty std::optional)
+  /// @return the value expected from the functor, either void or std::optional<T>
+  auto update() const noexcept {
+    constexpr auto return_void = std::is_same_v<void, CALLBACK_RETURN_TYPE>;
+
+    switch (Button<>::getStateChange()) {
+      case Button<>::IS_RISING:   if (m_on_rising)   { if constexpr (return_void) m_on_rising();   else return std::optional<CALLBACK_RETURN_TYPE>{m_on_rising()}; }   break;
+      case Button<>::IS_FALLING:  if (m_on_falling)  { if constexpr (return_void) m_on_falling();  else return std::optional<CALLBACK_RETURN_TYPE>{m_on_falling()}; }  break;
+      case Button<>::IS_PRESSED:  if (m_on_pressed)  { if constexpr (return_void) m_on_pressed();  else return std::optional<CALLBACK_RETURN_TYPE>{m_on_pressed()}; }  break;
+      case Button<>::IS_RELEASED: if (m_on_released) { if constexpr (return_void) m_on_released(); else return std::optional<CALLBACK_RETURN_TYPE>{m_on_released()}; } break;
+    }
+    if constexpr (!return_void) return std::optional<CALLBACK_RETURN_TYPE>{};
+  }
+
+  /// @brief reads the button's state change, and calls the appropriate functor (if none is set, returns an empty std::optional)
+  /// @return the value expected from the functor, either void or std::optional<T>
+  auto operator()() const noexcept { return update(); }
+  
+  /// @param callback the new functor to be set
+  void onRising(CALLBACK_TYPE callback) noexcept { m_on_rising = callback; }
+  /// @param callback the new functor to be set
+  void onFalling(CALLBACK_TYPE callback) noexcept { m_on_falling = callback; }
+  /// @param callback the new functor to be set
+  void onPressed(CALLBACK_TYPE callback) noexcept { m_on_pressed = callback; }
+  /// @param callback the new functor to be set
+  void onReleased(CALLBACK_TYPE callback) noexcept { m_on_released = callback; }
+  
+ private:
+  CALLBACK_TYPE m_on_rising;
+  CALLBACK_TYPE m_on_falling;
+  CALLBACK_TYPE m_on_pressed;
+  CALLBACK_TYPE m_on_released;
+}; // class CapturingCallbackButton<T(void)>
 
 } // namespace abckoth
 
