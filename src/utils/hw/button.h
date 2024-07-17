@@ -1,3 +1,6 @@
+/// This file is ridiculously complex for its usecase in this project, but
+/// it's intended to be modular for other usecases.
+
 #ifndef UTILS_HW_BUTTON_H
 #define UTILS_HW_BUTTON_H
 
@@ -18,8 +21,8 @@ class Button {
       IS_PRESSED  = 0b11,
   };
 
-  /// @param pin the digital pin assigned to the button
-  /// @param init whether or not to call begin() right away
+  /// @param pin The digital pin assigned to the button
+  /// @param init Whether or not to call begin() right away
   explicit constexpr Button(const uint8_t pin, const bool init = false) noexcept
   : c_pin(pin), m_state(LOW), m_delay_until(0)
   {
@@ -104,9 +107,9 @@ class CallbackButton : public Button<DEBOUNCE_DELAY_MILLIS> {
     if constexpr (!return_void) return std::optional<CALLBACK_RETURN_TYPE>{};
   }
 
-  /// @brief reads the button's state change, and calls the appropriate callback (if none is set, returns an empty std::optional)
+  /// @brief Reads the button's state change, and calls the appropriate callback (if none is set, returns an empty std::optional)
   /// @param ...args the parameters of the callbacks
-  /// @return the value expected from the callbacks, either void or std::optional<T>
+  /// @return The value expected from the callbacks, either void or std::optional<T>
   auto operator()(CALLBACK_ARGUMENT_TYPES... agrs) const noexcept { return update(agrs...); }
   
   /// @param callback the new callback to be set
@@ -148,9 +151,9 @@ class FunctorButton : public Button<DEBOUNCE_DELAY_MILLIS> {
   : Button<>(pin, init), m_on_rising(on_rising), m_on_falling(on_falling), m_on_pressed(on_pressed), m_on_released(on_released)
   {}
   
-  /// @brief reads the button's state change, and calls the appropriate functor (if none is set, returns an empty std::optional)
+  /// @brief Reads the button's state change, and calls the appropriate functor (if none is set, returns an empty std::optional)
   /// @param ...args the parameters of the functors
-  /// @return the value expected from the functor, either void or std::optional<T>
+  /// @return The value expected from the functor, either void or std::optional<T>
   auto update(CALLBACK_ARGUMENT_TYPES... args) const noexcept {
     constexpr auto return_void = std::is_same_v<void, CALLBACK_RETURN_TYPE>;
 
