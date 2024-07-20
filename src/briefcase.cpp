@@ -16,7 +16,9 @@ void change_winning_led(Led losing, Led winning) {
   blink_led(winning);
 }
 
-Briefcase::Briefcase(const std::string& module_name) : Task(module_name) {
+Briefcase::Briefcase(const std::string& module_name) : Task(module_name) { }
+
+void Briefcase::create() {
   winning = KOTH_ACTIVE::INACTIVE;
 
   lcd_display.init();
@@ -32,13 +34,15 @@ Briefcase::Briefcase(const std::string& module_name) : Task(module_name) {
   reset_button.begin();
 
   last_time_millis = ::millis();
+  
+  Task::create();
 }
 
 void Briefcase::taskFunc() {
   // concurrency should not be a problem, it is physically *hard* to press both buttons
-  reset_button.update();
-  red_button.update();
-  yellow_button.update();
+  reset_button();
+  red_button();
+  yellow_button();
 
   reset_led_blink();
   update_counter();

@@ -28,6 +28,7 @@ void change_winning_led(Led losing, Led winning);
 class Briefcase : public Task<2 * 1024> {
 public:
   Briefcase(const std::string& module_name);
+  void create() override;
   void taskFunc() override;
 
 private:
@@ -52,9 +53,9 @@ private:
   // Members (hardware peripheries)
   LiquidCrystal_I2C lcd_display{0x27, 16, 2};
 
-  abckoth::Led red_led{RED_LED_PIN};
-  abckoth::Led yellow_led{YELLOW_LED_PIN};
-  abckoth::Led reset_led{RESET_LED_PIN};
+  Led red_led{RED_LED_PIN};
+  Led yellow_led{YELLOW_LED_PIN};
+  Led reset_led{RESET_LED_PIN};
 
   button_t red_button{RED_BUTTON_PIN, [&](){
     if (winning == KOTH_ACTIVE::RED) return;
@@ -77,4 +78,4 @@ private:
 
 } // namespace abckoth
 
-#endif // MODULES_BRIEFCASE_H
+#endif // BRIEFCASE_H
