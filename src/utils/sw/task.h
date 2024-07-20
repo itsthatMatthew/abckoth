@@ -30,7 +30,7 @@ public:
         [](void* obj) constexpr {
           uint32_t last_tick = xTaskGetTickCount();
           for (;;) {
-            static_cast<decltype(this)>(obj)->moduleTask();
+            static_cast<decltype(this)>(obj)->taskFunc();
             taskYIELD(); // yield instead of delay for 100% cpu utilization
           }
         },
