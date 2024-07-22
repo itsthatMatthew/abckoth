@@ -7,7 +7,19 @@
 namespace abckoth
 {
 
-template<uint32_t STACK_DEPTH = 1024, uint32_t PRIORITY = tskIDLE_PRIORITY>
+namespace delaypolicies {
+
+struct Yield {
+  static inline void execute() { taskYIELD(); }
+};
+
+template<uint32_t ticks> struct Delay {
+  static inline void execute() { vTaskDelay(ticks); }
+};
+
+} // namespace DELAYPOLICY
+
+template<uint32_t STACK_DEPTH = 1024, class DELAYPOLICY = delaypolicies::Yield, uint32_t PRIORITY = tskIDLE_PRIORITY>
 class Task {
 public:
   explicit Task(const std::string& module_name)
@@ -31,7 +43,7 @@ public:
           uint32_t last_tick = xTaskGetTickCount();
           for (;;) {
             static_cast<decltype(this)>(obj)->taskFunc();
-            taskYIELD(); // yield instead of delay for 100% cpu utilization
+            DELAYPOLICY::execute();
           }
         },
         c_task_name.c_str(),
