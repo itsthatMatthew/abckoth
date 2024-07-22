@@ -13,8 +13,8 @@ struct Yield {
   static inline void execute() { taskYIELD(); }
 };
 
-template<uint32_t ticks> struct Delay {
-  static inline void execute() { vTaskDelay(ticks); }
+template<uint32_t ms> struct Delay {
+  static inline void execute() { vTaskDelay(ms / portTICK_PERIOD_MS); }
 };
 
 } // namespace DELAYPOLICY
