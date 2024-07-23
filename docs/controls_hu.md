@@ -14,10 +14,10 @@ A táskában található mikrovezérlő tápellátásának biztosítása után a
 
 A játék bármely pillanatban az alábbi állapotok pontosan egyikét veszi fel:
 
-- Alapállapot: a játék készenlétben áll, várja, hogy bármely gomb lenyomásra kerüljön. A piros és sárga gombok együttesen folytonosan világítanak.
+- Alapállapot: a játék készenlétben áll, várja, hogy bármely gomb lenyomásra kerüljön. A reset, piros és sárga gombok együttesen folytonosan villognak.
 - Sárga foglal: a játék a sárga szín számára számol el pontokat, a sárga gomb folytonosan világít.
 - Piros foglal: a játék a piros szín számára számol el pontokat, a piros gomb folytonosan világít.
-- Kiértékelés: a játék nem számol pontokat, a jelenlegi állás alapján nyerésre álló csapat gombja 1:1 ütemben villog, a vesztésre álló csapat gombja 1:N ütemben villog (ahol N a szín pontszám-összegbeli hátrányával arányos, legalább 2).
+- Kiértékelés: a játék nem számol pontokat, a reset gomb villog ~~, a jelenlegi állás alapján nyerésre álló csapat gombja 1:1 ütemben villog, a vesztésre álló csapat gombja 1:N ütemben villog (ahol N a szín pontszám-összegbeli hátrányával arányos, legalább 2)~~.
 
 ## Állapotátmenetek
 - Alapállapot -> Sárga foglal: a sárga gomb lenyomására.
