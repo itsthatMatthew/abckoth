@@ -1,2 +1,8 @@
+# Do not track PlatofrmIO specific files (cache, libs, etc.)
 .pio
+
+# Do not track VSC config files
 .vscode
+
+# Do not track the script generated websites source file
+/src/net/websrc.h
