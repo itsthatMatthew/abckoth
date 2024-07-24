@@ -22,7 +22,7 @@ using button_t = abckoth::FunctorButton<100, std::function<void(void)>>;
 
 // Helper functions (global)
 void blink_led(Led led);
-void change_winning_led(Led losing, Led winning);
+void change_capturing_led(Led losing, Led capturing);
 
 // Class declaration
 class Briefcase : public Task<2 * 1024> {
@@ -36,6 +36,7 @@ private:
   void reset_led_blink();
   void update_counter();
   void print_standings();
+  auto get_ahead_team();
 
   // Game state
   enum class KOTH_ACTIVE : uint8_t {
@@ -43,7 +44,7 @@ private:
     RED = 0b01,
     YELLOW = 0b10,
     RESULTS = 0b11
-  } winning;
+  } capturing;
 
   // Members (software)
   std::size_t red_counter_millis = 0;
@@ -58,19 +59,19 @@ private:
   Led reset_led{RESET_LED_PIN};
 
   button_t red_button{RED_BUTTON_PIN, [&](){
-    if (winning == KOTH_ACTIVE::RED) return;
-    winning = KOTH_ACTIVE::RED;
-    change_winning_led(yellow_led, red_led);
+    if (capturing == KOTH_ACTIVE::RED) return;
+    capturing = KOTH_ACTIVE::RED;
+    change_capturing_led(yellow_led, red_led);
   }};
 
   button_t yellow_button{YELLOW_BUTTON_PIN, [&](){
-    if (winning == KOTH_ACTIVE::YELLOW) return;
-    winning = KOTH_ACTIVE::YELLOW;
-    change_winning_led(red_led, yellow_led);
+    if (capturing == KOTH_ACTIVE::YELLOW) return;
+    capturing = KOTH_ACTIVE::YELLOW;
+    change_capturing_led(red_led, yellow_led);
   }};
 
   button_t reset_button{RESET_BUTTON_PIN, [&](){
-    winning = KOTH_ACTIVE::RESULTS;
+    capturing = KOTH_ACTIVE::RESULTS;
   }, nullptr, [](){
     static auto pressed_millis = ::millis(); 
   }};
