@@ -10,11 +10,11 @@ namespace abckoth
 namespace delaypolicies {
 
 struct Yield {
-  static inline void execute() { taskYIELD(); }
+  static inline void execute(uint32_t& tick) { taskYIELD(); }
 };
 
 template<uint32_t ms> struct Delay {
-  static inline void execute() { vTaskDelay(ms / portTICK_PERIOD_MS); }
+  static inline void execute(uint32_t& tick) { vTaskDelay(ms / portTICK_PERIOD_MS); }
 };
 
 } // namespace DELAYPOLICY
@@ -40,10 +40,10 @@ public:
     if(!m_task_handle) {
       xTaskCreate(
         [](void* obj) constexpr {
-          uint32_t last_tick = xTaskGetTickCount();
+          uint32_t tick = xTaskGetTickCount();
           for (;;) {
             static_cast<decltype(this)>(obj)->taskFunc();
-            DELAYPOLICY::execute();
+            DELAYPOLICY::execute(tick);
           }
         },
         c_task_name.c_str(),
