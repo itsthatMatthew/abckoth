@@ -9,12 +9,20 @@ namespace abckoth
 
 namespace delaypolicies {
 
+struct NoDelay{
+  static inline void execute(uint32_t& tick) { }
+};
+
 struct Yield {
   static inline void execute(uint32_t& tick) { taskYIELD(); }
 };
 
 template<uint32_t ms> struct Delay {
   static inline void execute(uint32_t& tick) { vTaskDelay(ms / portTICK_PERIOD_MS); }
+};
+
+template<uint32_t ms> struct DelayUntil {
+  static inline void execute(uint32_t& tick) { xTaskDelayUntil(&tick, ms / portTICK_PERIOD_MS); }
 };
 
 } // namespace DELAYPOLICY
