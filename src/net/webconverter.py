@@ -14,11 +14,10 @@ print('WEBCONVERTER running...')
 
 # Script body
 Import("env") # used by pio build to install necessary packages
-try:
-  from bs4 import BeautifulSoup, Comment
-except ImportError:
-  env.Execute("$PYTHONEXE -m pip install BeautifulSoup4")
+env.Execute("$PYTHONEXE -m pip install BeautifulSoup4")
+
 import os
+from bs4 import BeautifulSoup, Comment
 
 def process_source_type(path):
   if path.endswith('html'):
