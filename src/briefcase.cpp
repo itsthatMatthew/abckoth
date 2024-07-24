@@ -38,10 +38,11 @@ void Briefcase::create() {
   red_led.begin();
   yellow_led.begin();
   reset_led.begin();
+  reset_led.on();
 
-  red_button.begin();
-  yellow_button.begin();
-  reset_button.begin();
+  red_button.begin(INPUT_PULLDOWN);
+  yellow_button.begin(INPUT_PULLDOWN);
+  reset_button.begin(INPUT_PULLDOWN);
 
   last_time_millis = ::millis();
   
@@ -69,7 +70,7 @@ void Briefcase::reset_led_blink() {
     {
       if (current > last_blink + 1000) {
         last_blink = current;
-        reset_led.on(); ::delay(100); reset_led.off();
+        //reset_led.on(); ::delay(100); reset_led.off();
       }
     }
     break;
@@ -77,7 +78,7 @@ void Briefcase::reset_led_blink() {
     {
       if (current > last_blink + 500) {
         last_blink = current;
-        reset_led.on(); ::delay(100); reset_led.off();
+        //reset_led.on(); ::delay(100); reset_led.off();
       }
     }
   default: break;
