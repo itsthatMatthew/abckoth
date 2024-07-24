@@ -17,6 +17,15 @@ void change_capturing_led(Led losing, Led capturing) {
   //blink_led(capturing);
 }
 
+auto Briefcase::get_ahead_team() {
+  switch (capturing)
+  {
+  case KOTH_ACTIVE::INACTIVE: return KOTH_ACTIVE::INACTIVE; break;
+  default: return (red_counter_millis > yellow_counter_millis)
+    ?  KOTH_ACTIVE::RED : KOTH_ACTIVE::YELLOW; break;
+  }
+}
+
 Briefcase::Briefcase(const std::string& module_name) : Task(module_name) { }
 
 void Briefcase::create() {
@@ -85,9 +94,7 @@ void Briefcase::update_counter() {
 void Briefcase::print_standings() {
   constexpr const char *format = "%c %-6s: %3u:%02u";
 
-  auto ahead = (capturing == KOTH_ACTIVE::INACTIVE ? KOTH_ACTIVE::INACTIVE
-    : red_counter_millis > yellow_counter_millis ? KOTH_ACTIVE::RED
-      : KOTH_ACTIVE::YELLOW);
+  auto ahead = get_ahead_team();
   
   lcd_display.setCursor(0,0);
   lcd_display.printf(format, ahead == KOTH_ACTIVE::RED ? 'W' : 'L', "RED",
