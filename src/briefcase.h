@@ -72,8 +72,6 @@ private:
 
   button_t reset_button{RESET_BUTTON_PIN, [&](){
     capturing = KOTH_ACTIVE::RESULTS;
-  }, nullptr, [](){
-    static auto pressed_millis = ::millis(); 
   }};
 }; // class Briefcase
 
