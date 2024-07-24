@@ -30,8 +30,8 @@ class Button {
   }
   
   /// @brief Initializes the digital pin and reads state
-  void begin() const noexcept {
-    pinMode(c_pin, INPUT);
+  void begin(const uint8_t mode = INPUT) const noexcept {
+    pinMode(c_pin, mode);
     readNewState();
   }
   
