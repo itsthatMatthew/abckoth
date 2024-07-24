@@ -71,6 +71,7 @@ void Briefcase::reset_led_blink() {
       if (current > last_blink + 1000) {
         last_blink = current;
         //reset_led.on(); ::delay(100); reset_led.off();
+        red_led.on(); yellow_led.on(); ::delay(100); red_led.off(); yellow_led.off();
       }
     }
     break;
@@ -79,6 +80,7 @@ void Briefcase::reset_led_blink() {
       if (current > last_blink + 500) {
         last_blink = current;
         //reset_led.on(); ::delay(100); reset_led.off();
+        red_led.on(); yellow_led.on(); ::delay(100); red_led.off(); yellow_led.off();
       }
     }
   default: break;
