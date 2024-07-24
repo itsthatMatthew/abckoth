@@ -13,7 +13,8 @@ void blink_led(Led led) {
 
 void change_winning_led(Led losing, Led winning) {
   losing.off();
-  blink_led(winning);
+  winning.on();
+  //blink_led(winning);
 }
 
 Briefcase::Briefcase(const std::string& module_name) : Task(module_name) { }
