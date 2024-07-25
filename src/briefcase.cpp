@@ -11,15 +11,25 @@ void blink_led(Led led) {
   led.on();
 };
 
-void change_winning_led(Led losing, Led winning) {
+void change_capturing_led(Led losing, Led capturing) {
   losing.off();
-  blink_led(winning);
+  capturing.on();
+  //blink_led(capturing);
+}
+
+auto Briefcase::get_ahead_team() {
+  switch (capturing)
+  {
+  case KOTH_ACTIVE::INACTIVE: return KOTH_ACTIVE::INACTIVE; break;
+  default: return (red_counter_millis > yellow_counter_millis)
+    ?  KOTH_ACTIVE::RED : KOTH_ACTIVE::YELLOW; break;
+  }
 }
 
 Briefcase::Briefcase(const std::string& module_name) : Task(module_name) { }
 
 void Briefcase::create() {
-  winning = KOTH_ACTIVE::INACTIVE;
+  capturing = KOTH_ACTIVE::INACTIVE;
 
   lcd_display.init();
   lcd_display.backlight();
@@ -28,10 +38,11 @@ void Briefcase::create() {
   red_led.begin();
   yellow_led.begin();
   reset_led.begin();
+  reset_led.on();
 
-  red_button.begin();
-  yellow_button.begin();
-  reset_button.begin();
+  red_button.begin(INPUT_PULLDOWN);
+  yellow_button.begin(INPUT_PULLDOWN);
+  reset_button.begin(INPUT_PULLDOWN);
 
   last_time_millis = ::millis();
   
@@ -53,13 +64,14 @@ void Briefcase::reset_led_blink() {
   static auto last_blink = ::millis();
   auto current = ::millis(); 
 
-  switch (winning)
+  switch (capturing)
   {
   case KOTH_ACTIVE::INACTIVE:
     {
       if (current > last_blink + 1000) {
         last_blink = current;
-        reset_led.on(); ::delay(100); reset_led.off();
+        //reset_led.on(); ::delay(100); reset_led.off();
+        red_led.on(); yellow_led.on(); ::delay(100); red_led.off(); yellow_led.off();
       }
     }
     break;
@@ -67,7 +79,8 @@ void Briefcase::reset_led_blink() {
     {
       if (current > last_blink + 500) {
         last_blink = current;
-        reset_led.on(); ::delay(100); reset_led.off();
+        //reset_led.on(); ::delay(100); reset_led.off();
+        red_led.on(); yellow_led.on(); ::delay(100); red_led.off(); yellow_led.off();
       }
     }
   default: break;
@@ -77,16 +90,14 @@ void Briefcase::reset_led_blink() {
 void Briefcase::update_counter() {
   const std::size_t elapsed = ::millis() - last_time_millis;
   last_time_millis = ::millis();
-  if (winning == KOTH_ACTIVE::RED) { red_counter_millis += elapsed; }
-  else if (winning == KOTH_ACTIVE::YELLOW) { yellow_counter_millis += elapsed; }
+  if (capturing == KOTH_ACTIVE::RED) { red_counter_millis += elapsed; }
+  else if (capturing == KOTH_ACTIVE::YELLOW) { yellow_counter_millis += elapsed; }
 }
 
 void Briefcase::print_standings() {
   constexpr const char *format = "%c %-6s: %3u:%02u";
 
-  auto ahead = (winning == KOTH_ACTIVE::INACTIVE ? KOTH_ACTIVE::INACTIVE
-    : red_counter_millis > yellow_counter_millis ? KOTH_ACTIVE::RED
-      : KOTH_ACTIVE::YELLOW);
+  auto ahead = get_ahead_team();
   
   lcd_display.setCursor(0,0);
   lcd_display.printf(format, ahead == KOTH_ACTIVE::RED ? 'W' : 'L', "RED",
