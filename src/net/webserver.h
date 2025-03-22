@@ -18,6 +18,7 @@ public:
   static WebServer& instance;
   void create() override;
   void taskFunc() override;
+  void on(const char*, WebRequestMethodComposite, ArRequestHandlerFunction);
 private:
   AsyncWebServer m_web_server;
   AsyncDNSServer m_dns_server;
