@@ -12,12 +12,12 @@ void WebServer::create() {
   assert(WiFi.softAP("ABC:KOTH", nullptr));
 
   m_web_server.onNotFound([](auto *req) {
-    req->send_P(404, "text/html", notfound_html);
+    req->send(404, "text/html", notfound_html);
   });
 
   for (auto& src : websrc) {
     m_web_server.on(src.name, HTTP_GET, [=](auto *req) {
-      req->send_P(200, src.type, src.data);
+      req->send(200, src.type, src.data);
     });
   }
 
