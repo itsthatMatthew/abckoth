@@ -39,7 +39,7 @@ class Button {
   /// @return High or low value as in digitalRead()
   uint8_t readNewState() const noexcept {
     if (::millis() >= m_delay_until)
-      m_state = digitalRead(c_pin);
+      m_state = static_cast<uint8_t>(digitalRead(c_pin));
 
     return m_state;
   }
