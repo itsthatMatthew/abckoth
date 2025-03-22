@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>ABCKOTH Web Server - Diagnostics Tool</title>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <meta charset="utf-8">
+        <link href="styles/main.css" rel="stylesheet"/>
+        <script src="scripts/fetch_diagnostics_data.js"></script>
+        <script src="scripts/fetch_attributes.js"></script>
+    </head>
+    <body>
+        <h1>ABC:KOTH Web Server - Diagnostics Tool</h1>
+        <div class="content">
+            <p>This site contains diagnostics data and the registered attributes.</p>
+            <h2>Diagnostics data</h2>
+            <label for="diagnostics-data-table">This table contains the diagnostics data of the microcontroller.</label>
+            <table id="diagnostics-data">
+            </table>
+            <h2>Attributes table</h2>
+            <label for="attributes-table">This table contains the registered attributes on the microcontroller.</label>
+            <table id="attributes-table">
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                    <th>Description</th>
+                </tr>
+            </table>
+        </div>
+        <footer>
+            <a href="https://github.com/itsthatMatthew/abckoth">&lt;/&gt;</a> with <span class="accent">&hearts;</span> by <a href="https://github.com/itsthatMatthew">thatMatthew</a>
+        </footer>
+    </body>
+</html>
