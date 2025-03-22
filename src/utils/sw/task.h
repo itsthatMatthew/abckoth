@@ -4,8 +4,7 @@
 #include <string>
 #include <Arduino.h>
 
-namespace abckoth
-{
+namespace abckoth {
 
 namespace delaypolicies {
 
@@ -82,6 +81,7 @@ private:
   const std::string c_task_name;
   TaskHandle_t m_task_handle;
 }; // class Task
+
 } // namespace abckoth
 
 
