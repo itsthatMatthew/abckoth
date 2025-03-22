@@ -11,12 +11,12 @@ void WebServer::create() {
   assert(WiFi.softAPConfig({192, 168, 1, 1}, {192, 168, 1, 1}, {255, 255, 255, 0}));
   assert(WiFi.softAP("ABC:KOTH", nullptr));
 
-  m_web_server.onNotFound([](AsyncWebServerRequest *req) {
+  m_web_server.onNotFound([](auto *req) {
     req->send_P(404, "text/html", notfound_html);
   });
 
   for (auto& src : websrc) {
-    m_web_server.on(src.name, HTTP_GET, [=](AsyncWebServerRequest *req) {
+    m_web_server.on(src.name, HTTP_GET, [=](auto *req) {
       req->send_P(200, src.type, src.data);
     });
   }
@@ -31,5 +31,9 @@ void WebServer::create() {
 }
 
 void WebServer::taskFunc() {}
+
+void WebServer::on(const char* uri, WebRequestMethodComposite method, ArRequestHandlerFunction onRequest) {
+  m_web_server.on(uri, method, onRequest);
+}
 
 } // namespace abckoth
