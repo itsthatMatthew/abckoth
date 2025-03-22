@@ -1,8 +1,17 @@
 # Do not track PlatofrmIO specific files (cache, libs, etc.)
+.pioenvs
+.piolibdeps
+.clang_complete
+.gcc-flags.json
 .pio
 
 # Do not track VSC config files
 .vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 
 # Do not track the script generated websites source file
 /src/net/websrc.h
