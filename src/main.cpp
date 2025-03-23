@@ -2,10 +2,11 @@
 #include "net/webserver.h"
 
 abckoth::Briefcase game{"briefcase"};
+auto& webserver = abckoth::WebServer::getInstance();
 
 void setup() {
   game.create();
-  abckoth::WebServer::instance.create();
+  webserver.create();
 }
 
 void loop() {
