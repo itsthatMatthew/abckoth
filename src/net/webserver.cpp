@@ -4,8 +4,6 @@
 namespace abckoth
 {
 
-WebServer& WebServer::instance{ WebServer::getInstance() };
-
 void WebServer::create() {
   assert(WiFi.mode(WIFI_MODE_AP));
   assert(WiFi.softAPConfig({192, 168, 1, 1}, {192, 168, 1, 1}, {255, 255, 255, 0}));

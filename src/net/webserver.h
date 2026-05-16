@@ -12,10 +12,10 @@
 namespace abckoth {
 
 class WebServer : Task<4 * 1024, delaypolicies::Delay<500>> {
-  WebServer() : Task("webserver"), m_web_server(80), m_dns_server() { }
-public:
-  static WebServer& getInstance() { static WebServer instance_; return instance_; }
-  static WebServer& instance;
+  public:
+  WebServer(const char* module_name = "webserver")
+  : Task(module_name), m_web_server(80), m_dns_server() { }
+
   void create() override;
   void taskFunc() override;
   void on(const char*, WebRequestMethodComposite, ArRequestHandlerFunction);
